@@ -1,24 +1,9 @@
-// app/index.tsx
 import React from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  Animated,
-} from "react-native";
-import { Link } from "expo-router";
+import { View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@/styles/theme";
-import { globalStyles } from "@/styles/globalStyles";
-import { calmxBranding } from "@/styles/branding";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-const { width } = Dimensions.get("window");
-const CARD_WIDTH = width - theme.spacing.lg * 2;
+import { calmxBranding } from "@/styles/branding";
 
 interface MeditationCardProps {
   title: string;
@@ -28,105 +13,7 @@ interface MeditationCardProps {
   gradient: string[];
 }
 
-const meditationTypes = [
-  {
-    id: "guided-breathing",
-    title: "Guided Breathing",
-    titleHindi: "श्वास ध्यान",
-    duration: "10 mins",
-    description: "Calm your mind through focused breathing exercises",
-    gradient: ["#4CA1AF", "#2C3E50"],
-    icon: "breath",
-  },
-  {
-    id: "stress-relief",
-    title: "Stress Relief",
-    titleHindi: "तनाव मुक्ति",
-    duration: "15 mins",
-    description: "Release tension and find inner peace",
-    gradient: ["#FF512F", "#DD2476"],
-    icon: "meditation",
-  },
-  {
-    id: "anxiety-relief",
-    title: "Anxiety Relief",
-    titleHindi: "चिंता मुक्ति",
-    duration: "12 mins",
-    description: "Reduce anxiety through mindful meditation",
-    gradient: ["#56ab2f", "#a8e063"],
-    icon: "peace",
-  },
-  {
-    id: "sleep-better",
-    title: "Sleep Better",
-    titleHindi: "अच्छी नींद",
-    duration: "20 mins",
-    description: "Relax your mind and body for better sleep",
-    gradient: ["#141E30", "#243B55"],
-    icon: "moon-waning-crescent",
-  },
-];
-
-export default function Dashboard() {
-  const insets = useSafeAreaInsets();
-  const scrollY = new Animated.Value(0);
-
-  const headerHeight = scrollY.interpolate({
-    inputRange: [0, 120],
-    outputRange: [200, 120],
-    extrapolate: "clamp",
-  });
-
-  return (
-    <View style={styles.container}>
-      <Animated.View style={[styles.header, { height: headerHeight }]}>
-        <LinearGradient
-          colors={calmxBranding.colors.gradients.primary}
-          style={[
-            styles.gradientHeader,
-            { paddingTop: insets.top + theme.spacing.md },
-          ]}
-        >
-          <Text style={styles.welcomeText}>Welcome to</Text>
-          <Text style={styles.appTitle}>CalmX</Text>
-          <Text style={styles.tagline}>{calmxBranding.voice.taglines[0]}</Text>
-        </LinearGradient>
-      </Animated.View>
-
-      <Animated.ScrollView
-        style={styles.content}
-        showsVerticalScrollIndicator={false}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: false }
-        )}
-        scrollEventThrottle={16}
-      >
-        <View style={styles.cardsContainer}>
-          {meditationTypes.map((meditation, index) => (
-            <Link
-              key={meditation.id}
-              href={`/meditations/${meditation.id}`}
-              asChild
-            >
-              <TouchableOpacity
-                style={[
-                  styles.cardWrapper,
-                  { marginTop: index === 0 ? 0 : theme.spacing.lg },
-                ]}
-              >
-                <MeditationCard {...meditation} />
-              </TouchableOpacity>
-            </Link>
-          ))}
-        </View>
-      </Animated.ScrollView>
-    </View>
-  );
-}
-
-// components/MeditationCard.tsx
-function MeditationCard({
+export function MeditationCard({
   title,
   titleHindi,
   duration,
@@ -214,13 +101,9 @@ const styles = StyleSheet.create({
   cardsContainer: {
     padding: theme.spacing.lg,
   },
-  cardWrapper: {
-    width: CARD_WIDTH,
-  },
   card: {
     borderRadius: theme.borderRadius.lg,
     overflow: "hidden",
-    marginTop: 10,
     ...calmxBranding.design.shadows.medium,
   },
   cardContent: {
@@ -266,3 +149,40 @@ const styles = StyleSheet.create({
     marginLeft: theme.spacing.xs,
   },
 });
+
+// const styles = StyleSheet.create({
+//   card: {
+//     borderRadius: theme.borderRadius.lg,
+//     marginBottom: theme.spacing.md,
+//     overflow: "hidden",
+//     elevation: 3,
+//     shadowColor: "#000",
+//     shadowOffset: { width: 0, height: 2 },
+//     shadowOpacity: 0.25,
+//     shadowRadius: 3.84,
+//   },
+//   content: {
+//     padding: theme.spacing.lg,
+//   },
+//   title: {
+//     // ...globalStyles.heading2,
+//     color: theme.colors.white,
+//   },
+//   titleHindi: {
+//     // ...globalStyles.heading3,
+//     color: theme.colors.white,
+//     opacity: 0.9,
+//     marginBottom: theme.spacing.xs,
+//   },
+//   duration: {
+//     // ...globalStyles.bodyText,
+//     color: theme.colors.white,
+//     opacity: 0.8,
+//     marginBottom: theme.spacing.sm,
+//   },
+//   description: {
+//     // ...globalStyles.bodyText,
+//     color: theme.colors.white,
+//     opacity: 0.9,
+//   },
+// });
